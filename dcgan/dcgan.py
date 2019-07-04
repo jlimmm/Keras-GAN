@@ -7,6 +7,7 @@ from keras.layers.advanced_activations import LeakyReLU
 from keras.layers.convolutional import UpSampling2D, Conv2D
 from keras.models import Sequential, Model
 from keras.optimizers import Adam
+from keras.utils import plot_model
 
 import matplotlib.pyplot as plt
 
@@ -67,6 +68,7 @@ class DCGAN():
         model.add(Activation("tanh"))
 
         model.summary()
+        plot_model(model, show_shapes=True, to_file='./saved_model/model_g.png')
 
         noise = Input(shape=(self.latent_dim,))
         img = model(noise)
@@ -97,6 +99,7 @@ class DCGAN():
         model.add(Dense(1, activation='sigmoid'))
 
         model.summary()
+        plot_model(model, show_shapes=True, to_file='./saved_model/model_d.png')
 
         img = Input(shape=self.img_shape)
         validity = model(img)
