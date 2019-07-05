@@ -7,6 +7,7 @@
 *.hdf5
 .DS_Store
 */datasets
+.ipynb_checkpoints
 .ipynb_checkpoints/*
 
 __pycache__
