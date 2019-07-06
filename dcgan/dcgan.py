@@ -24,6 +24,10 @@ class DCGAN():
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
         self.latent_dim = 100
 
+        self.loss_d = []
+        self.loss_g = []
+        self.acc = []
+
         optimizer = Adam(0.0002, 0.5)
 
         # Build and compile the discriminator
@@ -146,7 +150,16 @@ class DCGAN():
             g_loss = self.combined.train_on_batch(noise, valid)
 
             # Plot the progress
-            print ("%d [D loss: %f, acc.: %.2f%%] [G loss: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss))
+            if epoch % 10 == 0:
+                print ("%d [D loss: %f, acc.: %.2f%%] [G loss: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss))
+            self.loss_d.append(d_loss[0])
+            self.loss_g.append(g_loss)
+            self.acc.append(100*d_loss[1])
+
+
+            #self.loss_d.append(d_loss[0])
+            #self.loss_g.append(g_loss[0])
+            #self.acc.append(100*d_loss[1])
 
             # If at save interval => save generated image samples
             if epoch % save_interval == 0:
@@ -169,7 +182,23 @@ class DCGAN():
                 axs[i,j].axis('off')
                 cnt += 1
         fig.savefig("images/mnist_%d.png" % epoch)
+        plt.show()
         plt.close()
+
+    def plot_loss(self):
+
+        plt.plot(self.loss_d)
+        plt.title('loss_D')
+        plt.show()
+
+        plt.plot(self.loss_g)
+        plt.title('loss_G')
+        plt.show()
+
+        plt.plot(self.acc)
+        plt.title('acc (%)')
+        plt.show()
+
 
 
 if __name__ == '__main__':
