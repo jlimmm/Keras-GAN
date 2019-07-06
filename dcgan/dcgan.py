@@ -159,6 +159,7 @@ class DCGAN():
 
         # Rescale images 0 - 1
         gen_imgs = 0.5 * gen_imgs + 0.5
+        print(gen_imgs.shape)
 
         fig, axs = plt.subplots(r, c)
         cnt = 0
