@@ -186,19 +186,33 @@ class DCGAN():
         plt.close()
 
     def plot_loss(self):
+        data_df = pd.DataFrame(data=self.loss_d, columns=['loss_D'])
+        data_df['loss_G'] = self.loss_g
+        data_df['acc'] = self.acc
 
-        plt.plot(self.loss_d)
+
+        loss_D_smooth = data_df.loss_D.rolling(window=window).mean()
+        loss_G_smooth = data_df.loss_G.rolling(window=window).mean()
+        acc_smooth = data_df.acc.rolling(window=window).mean()
+
+
+        plt.plot(self.loss_d, label='raw')
+        plt.plot(loss_D_smooth, label='smth_'+str(window))
         plt.title('loss_D')
+        plt.legend(loc='best')
         plt.show()
 
-        plt.plot(self.loss_g)
+        plt.plot(self.loss_g, label='raw')
+        plt.plot(loss_G_smooth, label='smth_'+str(window))
+        plt.legend(loc='best')
         plt.title('loss_G')
         plt.show()
 
-        plt.plot(self.acc)
+        plt.plot(self.acc, label='raw')
+        plt.plot(acc_smooth, label='smth_'+str(window))
+        plt.legend(loc='best')
         plt.title('acc (%)')
         plt.show()
-
 
 
 if __name__ == '__main__':
